@@ -12,7 +12,19 @@ services:
       # This variable defines where the logs, file storage, monitor data and secret keys are stored.
     volumes:
       - langflow-data:/app/langflow
-
+  ollama-service:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_models:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
   postgres:
     image: postgres:16
     environment:
